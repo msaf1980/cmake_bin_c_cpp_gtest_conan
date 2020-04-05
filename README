@@ -1,0 +1,1 @@
+CMake exmaple: binary (with dependencies via conan and git submodule), test with google test and output check
