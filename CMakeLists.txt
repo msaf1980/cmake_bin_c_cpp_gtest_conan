@@ -32,7 +32,7 @@ if (NOT DEFINED LIBDIR)
 set( LIBDIR lib )
 endif()
 
-set ( PROJECT palindrom )
+set ( PROJECT hello )
 set ( BINARY ${PROJECT} )
 
 # Include cmake prescript from cmake dir
@@ -51,20 +51,33 @@ include(${CMAKE_SOURCE_DIR}/conan_load.cmake)
 endif()
 ################################################################################
 
+set( LZ4_VERSION 1.9.2 )
+set( LZ4_URL https://github.com/lz4/lz4/archive/v${LZ4_VERSION}.tar.gz )
+set( LZ4_MD5 3898c56c82fb3d9455aefd48db48eaad )
+
+
 file(GLOB cmakeFiles ${DIR_SCRIPT}/*.cmake)
 foreach(cmakeFile ${cmakeFiles})
     message("INCLUDE ${cmakeFile}")
     INCLUDE(${cmakeFile})
 endforeach(cmakeFile)
 
-set ( LIBRARIES
-    ${CONAN_LIBS_FMT}
-)
+set ( LIBRARIES )
 
 if ( DEFINED DIR_INCLUDES )
     # Includes in separate directory
     include_directories( ${DIR_INCLUDES} )
 endif()
+
+if (USE_LZ4)
+	list( APPEND LIBRARIES ${LZ4_LIBRARY} )
+	ADD_DEFINITIONS(-DUSE_LZ4=1)
+endif(USE)
+
+include_directories( ${CXXOPTS_INCLUDE_DIR} )
+
+include_directories( ${CONAN_INCLUDE_DIRS_FMT} )
+list( APPEND LIBRARIES ${CONAN_LIBS_FMT} )
 
 # Scan dir for standart source files
 aux_source_directory( ${DIR_SOURCES} SOURCES )
@@ -84,7 +97,7 @@ aux_source_directory( ${DIR_SOURCES} SOURCES )
 add_executable( ${BINARY} ${SOURCES} )
 #target_include_directories( ${BINARY} ${DIR_INCLUDES} )
 if(LIBRARIES)
-    target_link_libraries ( ${BINARY} ${LIBRARIES} )
+	target_link_libraries ( ${BINARY} ${LIBRARIES} )
 endif()
 
 if(DEFINED ENV{DEVENV})

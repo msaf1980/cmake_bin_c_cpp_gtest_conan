@@ -86,3 +86,7 @@ GRTAGS
 GTAGS
 gtags.files
 ########################
+#External projects
+*-prefix
+external
+

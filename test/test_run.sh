@@ -57,10 +57,12 @@ run_test() {
 	fi
 	[ "$ret" != "${ECODE}" ] && echo "exited with $? (want ${ECODE})"
 	if [ "${ostatus}" != "0" ]; then
+		status="1"
 		echo "stdout:"
 		cat ${outfile}.diff
 	fi
 	if [ "${estatus}" != "0" ]; then
+		status="1"
 		echo "stderr:"
 		cat ${errfile}.diff
 	fi
@@ -76,7 +78,9 @@ skipped=0
 if [ "$3" == "" ]; then
 	for t in ${CONFDIR}/*.test ; do
 		run=$( expr ${run} + 1 )
-		run_test ${t}
+		if ! run_test ${t} ; then
+			failed=$( expr ${failed} + 1 )
+		fi
 	done
 else
 	while [ -n "${3}" ]; do

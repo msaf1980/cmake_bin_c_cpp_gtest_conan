@@ -1,1 +1,5 @@
-CMake exmaple: binary (with dependencies via conan and git submodule), test with google test and output check
+CMake exmaple: binary (with dependencies via conan, git submodule, cmake external project), test with google test and output check
+
+Configurable options:
+USE_LZ4=[0|1]
+
