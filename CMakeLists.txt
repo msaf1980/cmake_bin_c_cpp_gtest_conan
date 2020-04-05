@@ -65,14 +65,14 @@ endforeach(cmakeFile)
 set ( LIBRARIES )
 
 if ( DEFINED DIR_INCLUDES )
-    # Includes in separate directory
-    include_directories( ${DIR_INCLUDES} )
+    # Includes in separate directory, also include dependecies headers
+	include_directories( ${DIR_INCLUDES} ${DEP_INSTALL_DIR}/include )
 endif()
 
 if (USE_LZ4)
 	list( APPEND LIBRARIES ${LZ4_LIBRARY} )
 	ADD_DEFINITIONS(-DUSE_LZ4=1)
-endif(USE)
+endif(USE_LZ4)
 
 include_directories( ${CXXOPTS_INCLUDE_DIR} )
 
@@ -95,6 +95,10 @@ aux_source_directory( ${DIR_SOURCES} SOURCES )
 
 # Add executable target
 add_executable( ${BINARY} ${SOURCES} )
+# Add build dependecies for correct build order
+if (USE_LZ4 AND NOT SYSTEM_LZ4_LIBRARY)
+	add_dependencies( ${BINARY}  lz4 )
+endif()
 #target_include_directories( ${BINARY} ${DIR_INCLUDES} )
 if(LIBRARIES)
 	target_link_libraries ( ${BINARY} ${LIBRARIES} )

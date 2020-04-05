@@ -89,4 +89,5 @@ gtags.files
 #External projects
 *-prefix
 external
+builddep
 
