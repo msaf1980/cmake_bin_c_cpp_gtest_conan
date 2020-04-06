@@ -1,8 +1,13 @@
 find_package(GTest REQUIRED)
 
+set ( TEST ${PROJECT} )
+set ( SOURCES_TEST )
+
 #Scan source dir for standart source files and exclude main.cpp
-aux_source_directory( ../${DIR_SOURCES} SOURCES_TEST )
-list( REMOVE_ITEM SOURCES_TEST "../${DIR_SOURCES}/main.cpp" )
+foreach ( dir IN LISTS SUB_DIRS )
+	aux_source_directory( ../${dir} SOURCES_TEST )
+	list( REMOVE_ITEM SOURCES_TEST "../${dir}/main.cpp" )
+endforeach()
 
 #Add sources from dir
 #set( SOURCES
@@ -11,6 +16,7 @@ list( REMOVE_ITEM SOURCES_TEST "../${DIR_SOURCES}/main.cpp" )
 
 include_directories(
 	../${DIR_INCLUDES}
+	${DEP_INSTALL_DIR}/include
 	${GTEST_INCLUDE_DIRS}
 )
 
@@ -18,9 +24,9 @@ set( TEST_LIBRARIES
 	${GTEST_LIBRARIES}
 )
 
-if ( SOURCES_TEST )
-	add_library( test${PROJECT} STATIC ${SOURCES_TEST} )
-	list( APPEND TEST_LIBRARIES test${PROJECT} )
+if (SOURCES_TEST)
+	add_library( test${TEST} STATIC ${SOURCES_TEST} )
+	list( APPEND TEST_LIBRARIES test${TEST} )
 endif()
 
 # Build tests
@@ -71,7 +77,7 @@ endif(BENCH)
 
 add_test(
 	NAME test_output
-	COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/test_run.sh ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${BINARY} ${CMAKE_CURRENT_SOURCE_DIR}/out
+	COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/test_run.sh ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${MAIN_BINARY} ${CMAKE_CURRENT_SOURCE_DIR}/out
 )
 
 #add_test(

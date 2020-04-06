@@ -14,7 +14,7 @@ if (USE_LZ4)
 			BUILD_COMMAND make
 			BUILD_IN_SOURCE 1
 			TEST_COMMAND ""
-			INSTALL_COMMAND rm -f ${DEP_INSTALL_DIR}/liblz4.* ; make install PREFIX=${DEP_INSTALL_DIR}
+			INSTALL_COMMAND make -C lib install PREFIX=${DEP_INSTALL_DIR}
 		)
 		ExternalProject_Get_Property( lz4 binary_dir )
 		set( LZ4_LIBRARY "${DEP_INSTALL_DIR}/lib/liblz4.a" )

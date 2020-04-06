@@ -1,5 +1,18 @@
-CMake exmaple: binary (with dependencies via conan, git submodule, cmake external project), test with google test and output check
+CMake example: single binary (with dependencies via conan, git submodule, cmake external project), test with google test and output check
 
 Configurable options:
 USE_LZ4=[0|1]
 
+Project structure (source dir):
+contrib	Directory for git submodules
+extenal	Directory for external projects (don't add this with git add)
+
+cmake Procedures and routines
+cmake/find Routines for include custom libs
+
+conanfile.txt  Configuration for conan package manager
+
+Project structure (source dir)
+extenal		Directory for external projects (sources, tmp files)
+builddep	Install directory for external projects.
+		Add builddep/include to header include path and search libraries in builddep/lib
