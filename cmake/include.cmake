@@ -1,0 +1,5 @@
+file(GLOB cmakeFiles ${PROJECT_SOURCE_DIR}/cmake/functions/*.cmake)
+foreach(cmakeFile ${cmakeFiles})
+	message("INCLUDE ${cmakeFile}")
+	INCLUDE(${cmakeFile})
+endforeach(cmakeFile)

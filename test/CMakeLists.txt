@@ -34,12 +34,7 @@ file( GLOB testFiles *_test.cpp )
 foreach( testFile ${testFiles} )
 	file(RELATIVE_PATH test_file ${CMAKE_CURRENT_SOURCE_DIR} ${testFile})
 	string(REGEX REPLACE "^([0-9a-zA-Z_\\-]+)_test\.c.*$" "\\1" test "${test_file}")
-	add_executable( test_${test} ${test_file} )
-	target_link_libraries ( test_${test} ${TEST_LIBRARIES} )
-	add_test(
-		NAME test_${test}
-		COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/test_${test}
-	)
+	custom_add_test( "test_${test}" "${test_file}" "${TEST_LIBRARIES}" "" )
 endforeach(testFile)
 
 #foreach( t IN LISTS TESTS )
